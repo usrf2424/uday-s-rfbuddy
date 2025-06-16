@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RF Buddy - Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      color: #007BFF;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #333;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    a.button {
+      display: block;
+      width: fit-content;
+      margin: 0 auto;
+      padding: 15px 25px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+    }
+    a.button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to RF Buddy</h1>
+
+  <section>
+    <h2>📡 What is RF Optimization?</h2>
+    <p>RF Optimization ensures mobile networks perform efficiently by analyzing KPIs and suggesting improvements. It helps maintain signal quality, reduce call drops, and improve internet speed.</p>
+  </section>
+
+  <section>
+    <h2>📊 Common RF KPIs</h2>
+    <ul>
+      <li><strong>RSRP (Reference Signal Received Power)</strong>: -80 to -90 dBm is good. Below -100 is weak.</li>
+      <li><strong>SINR (Signal to Interference plus Noise Ratio)</strong>: >20 dB is excellent; <10 is poor.</li>
+      <li><strong>CQI (Channel Quality Indicator)</strong>: 10–15 is ideal. Below 7 is degraded.</li>
+      <li><strong>PRB Utilization</strong>: <80% preferred. >90% indicates congestion.</li>
+      <li><strong>DL/UL Throughput</strong>: Higher the better, depending on user demand.</li>
+    </ul>
+  </section>
+
+  <section style="text-align: center;">
+    <h2>🗺️ Ready to Explore?</h2>
+    <p>Click the button below to view RF site KPIs on an interactive map.</p>
+    <a href="map.html" class="button">Go to RF Site Map <i class="fas fa-map"></i></a>
+  </section>
+</body>
+</html>
