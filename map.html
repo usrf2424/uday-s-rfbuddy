@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RF Buddy - Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      height: 70vh;
+      width: 100%;
+    }
+    .info {
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    .suggestions {
+      background: #fff;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="info">
+    <h2>Selected Site Info</h2>
+    <p id="siteData">Click on a marker to see KPI values.</p>
+    <div class="suggestions" id="suggestions"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const sites = [
+       { id: "INDLKO1200", lat: 26.841, lon: 80.946, rsrp: -103, sinr: 15.7, cqi: 8, prb: 84, dl: 41, ul: 11, pci: 30 },
+  { id: "INDLKO1201", lat: 26.845, lon: 80.950, rsrp: -91, sinr: 21.1, cqi: 14, prb: 75, dl: 57, ul: 16, pci: 45 },
+  { id: "INDLKO1202", lat: 26.849, lon: 80.955, rsrp: -90, sinr: 17.6, cqi: 11, prb: 82, dl: 59, ul: 13, pci: 33 },
+  { id: "INDLKO1203", lat: 26.853, lon: 80.942, rsrp: -95, sinr: 18.3, cqi: 9, prb: 86, dl: 47, ul: 12, pci: 51 },
+  { id: "INDLKO1204", lat: 26.857, lon: 80.948, rsrp: -104, sinr: 14.9, cqi: 7, prb: 80, dl: 44, ul: 10, pci: 30 },
+  { id: "INDLKO1205", lat: 26.861, lon: 80.951, rsrp: -93, sinr: 19.8, cqi: 12, prb: 78, dl: 54, ul: 15, pci: 45 },
+  { id: "INDLKO1206", lat: 26.863, lon: 80.959, rsrp: -87, sinr: 22.4, cqi: 15, prb: 84, dl: 61, ul: 17, pci: 33 },
+  { id: "INDLKO1207", lat: 26.867, lon: 80.962, rsrp: -98, sinr: 16.3, cqi: 10, prb: 89, dl: 49, ul: 13, pci: 51 },
+  { id: "INDLKO1208", lat: 26.869, lon: 80.954, rsrp: -106, sinr: 13.7, cqi: 6, prb: 83, dl: 43, ul: 11, pci: 30 },
+  { id: "INDLKO1209", lat: 26.872, lon: 80.949, rsrp: -91, sinr: 20.5, cqi: 13, prb: 79, dl: 56, ul: 16, pci: 45 },
+  { id: "INDLKO1210", lat: 26.874, lon: 80.951, rsrp: -88, sinr: 19.2, cqi: 12, prb: 81, dl: 60, ul: 15, pci: 33 },
+  { id: "INDLKO1211", lat: 26.876, lon: 80.958, rsrp: -96, sinr: 17.0, cqi: 9, prb: 87, dl: 50, ul: 14, pci: 51 },
+  { id: "INDLKO1212", lat: 26.878, lon: 80.963, rsrp: -105, sinr: 15.3, cqi: 8, prb: 85, dl: 42, ul: 12, pci: 30 },
+  { id: "INDLKO1213", lat: 26.879, lon: 80.965, rsrp: -92, sinr: 20.0, cqi: 13, prb: 76, dl: 55, ul: 14, pci: 45 },
+  { id: "INDLKO1214", lat: 26.881, lon: 80.966, rsrp: -89, sinr: 18.7, cqi: 11, prb: 83, dl: 59, ul: 13, pci: 33 },
+  { id: "INDLKO1215", lat: 26.883, lon: 80.968, rsrp: -97, sinr: 16.9, cqi: 10, prb: 88, dl: 48, ul: 13, pci: 51 },
+  { id: "INDLKO1216", lat: 26.885, lon: 80.970, rsrp: -102, sinr: 16.0, cqi: 9, prb: 86, dl: 45, ul: 12, pci: 30 },
+  { id: "INDLKO1217", lat: 26.887, lon: 80.972, rsrp: -93, sinr: 21.3, cqi: 14, prb: 77, dl: 58, ul: 15, pci: 45 },
+  { id: "INDLKO1218", lat: 26.889, lon: 80.973, rsrp: -90, sinr: 19.1, cqi: 12, prb: 82, dl: 62, ul: 14, pci: 33 },
+  { id: "INDLKO1219", lat: 26.891, lon: 80.974, rsrp: -95, sinr: 17.5, cqi: 10, prb: 87, dl: 49, ul: 13, pci: 51 },
+  { id: "INDLKO1220", lat: 26.893, lon: 80.976, rsrp: -103, sinr: 15.1, cqi: 8, prb: 84, dl: 43, ul: 11, pci: 30 },
+  { id: "INDLKO1221", lat: 26.895, lon: 80.977, rsrp: -94, sinr: 20.8, cqi: 13, prb: 78, dl: 55, ul: 14, pci: 45 },
+  { id: "INDLKO1222", lat: 26.897, lon: 80.978, rsrp: -88, sinr: 18.5, cqi: 12, prb: 85, dl: 60, ul: 15, pci: 33 },
+  { id: "INDLKO1223", lat: 26.899, lon: 80.979, rsrp: -96, sinr: 17.1, cqi: 9, prb: 89, dl: 50, ul: 13, pci: 51 },
+  { id: "INDLKO1224", lat: 26.901, lon: 80.980, rsrp: -101, sinr: 16.2, cqi: 10, prb: 85, dl: 44, ul: 12, pci: 30 },
+  { id: "INDLKO1225", lat: 26.903, lon: 80.982, rsrp: -90, sinr: 21.5, cqi: 14, prb: 77, dl: 56, ul: 16, pci: 45 },
+  { id: "INDLKO1226", lat: 26.905, lon: 80.983, rsrp: -89, sinr: 19.0, cqi: 13, prb: 84, dl: 61, ul: 15, pci: 33 },
+  { id: "INDLKO1227", lat: 26.907, lon: 80.984, rsrp: -94, sinr: 17.3, cqi: 11, prb: 88, dl: 52, ul: 13, pci: 51 },
+  { id: "INDLKO1228", lat: 26.909, lon: 80.986, rsrp: -100, sinr: 16.4, cqi: 9, prb: 86, dl: 46, ul: 12, pci: 30 },
+  { id: "INDLKO1229", lat: 26.911, lon: 80.987, rsrp: -91, sinr: 20.7, cqi: 13, prb: 79, dl: 57, ul: 15, pci: 45 },
+  { id: "INDLKO1230", lat: 26.913, lon: 80.988, rsrp: -90, sinr: 18.9, cqi: 12, prb: 83, dl: 63, ul: 14, pci: 33 },
+  { id: "INDLKO1231", lat: 26.915, lon: 80.990, rsrp: -95, sinr: 17.4, cqi: 10, prb: 87, dl: 51, ul: 13, pci: 51 }
+    ];
+
+    const map = L.map('map').setView([26.85, 80.95], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © OpenStreetMap contributors'
+    }).addTo(map);
+
+    sites.forEach(site => {
+      L.marker([site.lat, site.lon]).addTo(map)
+        .bindPopup(`<strong>${site.id}</strong>`)  
+        .on('click', () => showSiteInfo(site));
+    });
+
+    function showSiteInfo(site) {
+      document.getElementById("siteData").innerHTML = `
+        <strong>Site:</strong> ${site.id}<br>
+        <strong>RSRP:</strong> ${site.rsrp} dBm<br>
+        <strong>SINR:</strong> ${site.sinr} dB<br>
+        <strong>CQI:</strong> ${site.cqi}<br>
+        <strong>PRB:</strong> ${site.prb}%<br>
+        <strong>DL:</strong> ${site.dl} Mbps<br>
+        <strong>UL:</strong> ${site.ul} Mbps<br>
+        <strong>PCI:</strong> ${site.pci}
+      `;
+
+      const suggestions = [];
+      if (site.rsrp < -100) suggestions.push("📶 RSRP is weak — check coverage or increase antenna gain.");
+      if (site.sinr < 13) suggestions.push("🔇 SINR is low — investigate interference or tilt optimization.");
+      if (site.cqi < 9) suggestions.push("📉 CQI is low — consider link adaptation techniques.");
+      if (site.prb > 85) suggestions.push("🚦 High PRB usage — investigate for congestion or upgrade capacity.");
+
+      document.getElementById("suggestions").innerHTML = suggestions.length ?
+        `<strong>RF Optimization Suggestions:</strong><ul>${suggestions.map(s => `<li>${s}</li>`).join('')}</ul>` :
+        "✅ All KPIs are within optimal range.";
+    }
+  </script>
+</body>
+</html>
