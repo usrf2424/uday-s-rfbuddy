@@ -73,8 +73,8 @@
  <!-- Add inside your homepage body where you'd like the phone registration -->
 <section>
   <h2>📱 Register Your Number</h2>
-  <p>Enter your phone number to receive future network alerts and personalized suggestions.</p>
-  <input type="text" id="phoneNumber" placeholder="e.g. +91 98765 43210" style="padding: 10px; width: 100%; max-width: 400px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;" />
+  <p>Enter your phone number to receive network alerts and suggestions.</p>
+  <input type="text" id="phoneNumber" placeholder="e.g. +919876543210" style="padding: 10px; width: 100%; max-width: 400px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;" />
   <br />
   <button onclick="registerNumber()" style="padding: 10px 20px; border: none; background-color: #28a745; color: white; border-radius: 8px; cursor: pointer;">Register</button>
   <p id="successMsg" style="color: green; margin-top: 10px;"></p>
@@ -85,10 +85,10 @@
     const phoneInput = document.getElementById("phoneNumber");
     const msg = document.getElementById("successMsg");
     let phone = phoneInput.value.trim();
-    const cleanedPhone = phone.replace(/\s+/g, ''); // remove spaces
+    const cleanedPhone = phone.replace(/\D/g, ''); // removes all non-digits
 
-    if (!cleanedPhone.match(/^(\+?\d{10,14})$/)) {
-      alert('❌ Please enter a valid phone number (10–14 digits, optional +).');
+    if (cleanedPhone.length < 10 || cleanedPhone.length > 14) {
+      alert('❌ Please enter a valid number with 10 to 14 digits.');
       return;
     }
 
@@ -97,6 +97,7 @@
     phoneInput.value = '';
   }
 </script>
+
 
     <a href="map.html" class="button">Go to RF Site Map <i class="fas fa-map"></i></a>
   </section>
