@@ -70,6 +70,25 @@
   <section style="text-align: center;">
     <h2>🗺️ Ready to Explore?</h2>
     <p>Click the button below to view RF site KPIs on an interactive map.</p>
+    <section>
+  <h2>👤 Register Your Number</h2>
+  <p>Enter your phone number to start tracking your network experience.</p>
+  <input type="tel" id="phoneInput" placeholder="e.g. +919876543210" style="padding:8px; width:70%;" />
+  <button id="savePhone" style="padding:10px 20px;">Register</button>
+  <p id="phoneMsg" style="color: green;"></p>
+</section>
+
+<script>
+  document.getElementById('savePhone').addEventListener('click', () => {
+    const phone = document.getElementById('phoneInput').value.trim();
+    if (!phone.match(/^\\+?[0-9]{10,14}$/)) {
+      alert('Please enter a valid phone number.');
+      return;
+    }
+    localStorage.setItem('rfBuddyPhone', phone);
+    document.getElementById('phoneMsg').innerText = '✅ Registered ' + phone;
+  });
+</script>
     <a href="map.html" class="button">Go to RF Site Map <i class="fas fa-map"></i></a>
   </section>
 </body>
