@@ -70,25 +70,34 @@
   <section style="text-align: center;">
     <h2>🗺️ Ready to Explore?</h2>
     <p>Click the button below to view RF site KPIs on an interactive map.</p>
-    <section>
-  <h2>👤 Register Your Number</h2>
-  <p>Enter your phone number to start tracking your network experience.</p>
-  <input type="tel" id="phoneInput" placeholder="e.g. +919876543210" style="padding:8px; width:70%;" />
-  <button id="savePhone" style="padding:10px 20px;">Register</button>
-  <p id="phoneMsg" style="color: green;"></p>
+ <!-- Add inside your homepage body where you'd like the phone registration -->
+<section>
+  <h2>📱 Register Your Number</h2>
+  <p>Enter your phone number to receive future network alerts and personalized suggestions.</p>
+  <input type="text" id="phoneNumber" placeholder="e.g. +91 98765 43210" style="padding: 10px; width: 100%; max-width: 400px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;" />
+  <br />
+  <button onclick="registerNumber()" style="padding: 10px 20px; border: none; background-color: #28a745; color: white; border-radius: 8px; cursor: pointer;">Register</button>
+  <p id="successMsg" style="color: green; margin-top: 10px;"></p>
 </section>
 
 <script>
-  document.getElementById('savePhone').addEventListener('click', () => {
-    const phone = document.getElementById('phoneInput').value.trim();
-    if (!phone.match(/^\\+?[0-9]{10,14}$/)) {
-      alert('Please enter a valid phone number.');
+  function registerNumber() {
+    const phoneInput = document.getElementById("phoneNumber");
+    const msg = document.getElementById("successMsg");
+    let phone = phoneInput.value.trim();
+    const cleanedPhone = phone.replace(/\s+/g, ''); // remove spaces
+
+    if (!cleanedPhone.match(/^(\+?\d{10,14})$/)) {
+      alert('❌ Please enter a valid phone number (10–14 digits, optional +).');
       return;
     }
-    localStorage.setItem('rfBuddyPhone', phone);
-    document.getElementById('phoneMsg').innerText = '✅ Registered ' + phone;
-  });
+
+    localStorage.setItem("rfBuddyPhone", cleanedPhone);
+    msg.textContent = `✅ Registered successfully: ${cleanedPhone}`;
+    phoneInput.value = '';
+  }
 </script>
+
     <a href="map.html" class="button">Go to RF Site Map <i class="fas fa-map"></i></a>
   </section>
 </body>
